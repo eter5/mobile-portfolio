@@ -1,0 +1,23 @@
+{
+  "name": "wpo-tasks",
+  "version": "1.0.0",
+  "description": "Optimize online portfolio for speed! In particular, optimize the critical rendering path",
+  "main": [
+    "gulpfile.js"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/eter5/mobile-portfolio.git"
+  },
+  "author": "Israel Bastida | Eter5 Lab",
+  "license": "MIT",
+  "devDependencies": {
+    "browser-sync": "^2.7.13",
+    "gulp": "^3.9.0",
+    "gulp-changed": "^1.2.1",
+    "gulp-load-plugins": "^0.10.0"
+  }
+}

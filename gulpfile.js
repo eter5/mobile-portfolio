@@ -19,23 +19,23 @@ var browserSync = require('browser-sync').create(),
  * | Optimization tasks                                                |
  * ------------------------------------------------------------------- */
 
-// Optimize html
-gulp.task('optimize:html', function () {
-    return gulp.src('src/*.html')
+// html
+gulp.task('html', function () {
+    return gulp.src('src/index.html')
         .pipe(gulp.dest('./'))
         .pipe(browserSync.stream());
 });
 
-// Optimize styles
-gulp.task('optimize:styles', function () {
+// styles
+gulp.task('styles', function () {
     return gulp.src('src/css/*.css')
         .pipe(plugins.csso())
         .pipe(gulp.dest('css'))
         .pipe(browserSync.stream());
 });
 
-// Optimize images
-gulp.task('optimize:images', function () {
+// images
+gulp.task('images', function () {
     return gulp.src(['src/img/*.jpg', 'src/img/*.png'])
         .pipe(plugins.imagemin({
             progressive: true,
@@ -44,12 +44,39 @@ gulp.task('optimize:images', function () {
         .pipe(gulp.dest('img'));
 });
 
+// pizza html
+gulp.task('pizza:html', function () {
+    return gulp.src('src/views/pizza.html')
+        .pipe(gulp.dest('views'))
+        .pipe(browserSync.stream());
+});
+
+// pizza styles
+gulp.task('pizza:styles', function () {
+    return gulp.src(['src/views/css/style.css', 'src/views/css/bootstrap-grid.css'])
+        .pipe(plugins.concat('main.css'))
+        // .pipe(plugins.csso())
+        .pipe(gulp.dest('views/css'))
+        .pipe(browserSync.stream());
+});
+
+// images
+gulp.task('pizza:images', function () {
+    return gulp.src(['src/views/images/*.jpg', 'src/views/images/*.png'])
+        .pipe(plugins.imagemin({
+            progressive: true,
+            interlaced: true
+        }))
+        .pipe(gulp.dest('views/images'));
+});
+
+
 /* ---------------------------------------------------------------------
  * | Main tasks                                                        |
  * ------------------------------------------------------------------- */
 
 // Server
-gulp.task('server', ['optimize:html', 'optimize:styles', 'optimize:images'], function () {
+gulp.task('server', ['html', 'styles', 'images'], function () {
     // init browsersync
     browserSync.init({
         server: './',
@@ -58,8 +85,25 @@ gulp.task('server', ['optimize:html', 'optimize:styles', 'optimize:images'], fun
         browser: 'google chrome canary'
     });
     // watch
-    gulp.watch('src/*.html', ['optimize:html']);
-    gulp.watch('src/css/*.css', ['optimize:styles']);
+    gulp.watch('src/index.html', ['html']);
+    gulp.watch('src/css/*.css', ['styles']);
+});
+
+// Server pizza
+gulp.task('server:pizza', ['pizza:html', 'pizza:styles', 'pizza:images'], function () {
+    // init browsersync
+    browserSync.init({
+        server: {
+            baseDir: 'views',
+            index: 'pizza.html'
+        },
+        // tunnel: true,
+        // open: 'tunnel',
+        browser: 'google chrome canary'
+    });
+    // watch
+    gulp.watch('src/views/pizza.html', ['pizza:html']);
+    gulp.watch('src/views/css/*.css', ['pizza:styles']);
 });
 
 // Default

@@ -532,9 +532,22 @@ document.addEventListener('DOMContentLoaded', function() {
     elem.style.height = "100px";
     elem.style.width = "73.333px";
     elem.basicLeft = (i % cols) * s;
+
+    /* commentID1: added code
+     * This code below replace the same function on updatePositions() to add
+     * performance in DOM content load.
+     * See comment id10 for reference -> commentID10
+     */
     elem.style.left = elem.basicLeft + 100 * (Math.sin(i % 5)) + 'px';
+
     elem.style.top = (Math.floor(i / cols) * s) + 'px';
     document.querySelector("#movingPizzas1").appendChild(elem);
   }
+
+  /* commentID10: Commented code.
+   * His function runs more fast if we include directly in
+   * this DOMContentLoaded event listener.
+   * See comment id1 for reference -> commentID1
+   */
   // updatePositions();
 });

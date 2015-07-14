@@ -60,6 +60,13 @@ gulp.task('pizza:styles', function () {
         .pipe(browserSync.stream());
 });
 
+// pizza scripts
+gulp.task('pizza:scripts', function () {
+    return gulp.src('src/views/js/main.js')
+        .pipe(gulp.dest('views/js'))
+        .pipe(browserSync.stream());
+});
+
 // images
 gulp.task('pizza:images', function () {
     return gulp.src(['src/views/images/*.jpg', 'src/views/images/*.png'])
@@ -90,7 +97,7 @@ gulp.task('server', ['html', 'styles', 'images'], function () {
 });
 
 // Server pizza
-gulp.task('server:pizza', ['pizza:html', 'pizza:styles', 'pizza:images'], function () {
+gulp.task('server:pizza', ['pizza:html', 'pizza:styles', 'pizza:scripts', 'pizza:images'], function () {
     // init browsersync
     browserSync.init({
         server: {
@@ -104,6 +111,7 @@ gulp.task('server:pizza', ['pizza:html', 'pizza:styles', 'pizza:images'], functi
     // watch
     gulp.watch('src/views/pizza.html', ['pizza:html']);
     gulp.watch('src/views/css/*.css', ['pizza:styles']);
+    gulp.watch('src/views/js/*.js', ['pizza:scripts']);
 });
 
 // Default

@@ -503,8 +503,19 @@ function updatePositions() {
   window.performance.mark("mark_start_frame");
 
   var items = document.querySelectorAll('.mover');
+
+  /* commentID100: math operation one time
+   * This (document.body.scrollTop / 1250) math operation outside the
+   * iteration reduce the bottleneck.
+   * See comment id101 for reference -> commentID101 */
+  var scrollTop = document.body.scrollTop / 1250;
+
   for (var i = 0; i < items.length; i++) {
-    var phase = Math.sin((document.body.scrollTop / 1250) + (i % 5));
+    /* commentID101: changed (document.body.scrollTop / 1250) to scrollTop
+     * The (document.body.scrollTop / 1250) mathematical operation runs in
+     * every iteration causing bottleneck in the function.
+     * See comment id100 for reference -> commentID100 */
+    var phase = Math.sin(scrollTop + (i % 5));
     items[i].style.left = items[i].basicLeft + 100 * phase + 'px';
   }
 
@@ -525,7 +536,11 @@ window.addEventListener('scroll', updatePositions);
 document.addEventListener('DOMContentLoaded', function() {
   var cols = 8;
   var s = 256;
-  for (var i = 0; i < 200; i++) {
+
+  /* commentID11: changed the number of pizzas background
+   * I see no more than 24 pizzas in background.
+   * 200 are many pizzas! and I don't see all them */
+  for (var i = 0; i < 24; i++) {
     var elem = document.createElement('img');
     elem.className = 'mover';
     elem.src = "images/pizza.png";
@@ -536,18 +551,16 @@ document.addEventListener('DOMContentLoaded', function() {
     /* commentID1: added code
      * This code below replace the same function on updatePositions() to add
      * performance in DOM content load.
-     * See comment id10 for reference -> commentID10
-     */
+     * See comment id10 for reference -> commentID10 */
     elem.style.left = elem.basicLeft + 100 * (Math.sin(i % 5)) + 'px';
 
     elem.style.top = (Math.floor(i / cols) * s) + 'px';
     document.querySelector("#movingPizzas1").appendChild(elem);
   }
 
-  /* commentID10: Commented code.
-   * His function runs more fast if we include directly in
+  /* commentID10: commented code.
+   * This function runs more fast if we include directly in
    * this DOMContentLoaded event listener.
-   * See comment id1 for reference -> commentID1
-   */
+   * See comment id1 for reference -> commentID1 */
   // updatePositions();
 });
